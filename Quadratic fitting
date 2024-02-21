@@ -1,0 +1,27 @@
+import numpy as np
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+
+# Generate aritifical data
+np.random.seed(42)  # seed()could make the random-generated data reproducible
+x_data = np.linspace(0, 10, 50)
+y_true = 2 * x_data**2 - 3 * x_data + 1
+noise = np.random.normal(0, 5, size=len(x_data))#generate some noise relative to y_true
+y_data = y_true + noise
+
+# Define the quadratic function which is going to fit
+def quadratic_function(x, a, b, c):
+    return a * x**2 + b * x + c
+
+# Do curve fitting
+popt, pcov = curve_fit(quadratic_function, x_data, y_data)
+
+# Plot the results
+plt.scatter(x_data, y_data, label='Artificial Data')
+plt.plot(x_data, quadratic_function(x_data, *popt), 'r-', label='Fit Curve')
+plt.plot(x_data, y_true, 'g--', label='True Curve')
+plt.legend()
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Curve Fitting with Random-generated Data')
+plt.show()
